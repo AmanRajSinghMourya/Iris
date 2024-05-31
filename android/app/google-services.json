@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "786510428184",
+    "project_id": "iris-e579a",
+    "storage_bucket": "iris-e579a.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:786510428184:android:bf55bf935ddc8703126b6d",
+        "android_client_info": {
+          "package_name": "com.example.iris"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBaWqcDWFOq_zuwbqCroTiUQjVQC7QdHvM"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
