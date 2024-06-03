@@ -67,12 +67,6 @@ class AuthenticationController extends GetxController {
       isSignInloading.value = false;
       return "";
     } on FirebaseAuthException catch (e) {
-      // Show error message using dialog box
-      showAboutDialog(context: context, children: [
-        Text("Error: ${e.code}"),
-        Text("${e.message}"),
-      ]);
-
       if (e.code == 'user-not-found') {
         print('No user found for that email.');
       } else if (e.code == 'wrong-password') {

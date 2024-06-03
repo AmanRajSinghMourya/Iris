@@ -7,3 +7,4 @@ const String pleaseScanCard = "Please Scan Card";
 const String createAccount = 'Create Account';
 const String login = 'Login';
 const String signUp = 'Sign Up';
+const String skip = 'Skip';

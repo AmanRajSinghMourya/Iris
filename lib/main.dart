@@ -5,6 +5,7 @@ import 'package:iris/views/signup_view.dart';
 import 'firebase_options.dart';
 
 void main() async {
+  WidgetsFlutterBinding.ensureInitialized();
   await Firebase.initializeApp(
     options: DefaultFirebaseOptions.currentPlatform,
   );
@@ -42,7 +43,8 @@ class MyApp extends StatelessWidget {
         brightness: Brightness.dark,
       ),
       // home: DashBoard(),
-      home: const SignUpView(),
+      home: SignUpView(),
+      // home: const MyWidget(),
     );
   }
 }

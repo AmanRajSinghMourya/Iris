@@ -44,7 +44,7 @@ class _SignUpViewState extends State<SignUpView> {
       onTap: () => FocusManager.instance.primaryFocus?.unfocus(),
       child: Scaffold(
           backgroundColor: kBackgroundColor,
-          resizeToAvoidBottomInset: false,
+          resizeToAvoidBottomInset: true,
           body: LayoutBuilder(
             builder: (context, constraints) {
               if (constraints.maxWidth > 600) {
@@ -92,241 +92,220 @@ class _SignUpViewState extends State<SignUpView> {
 
   /// Main Body
   Widget _buildMainBody(Size size, ThemeData theme) {
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      mainAxisAlignment: size.width > 600
-          ? MainAxisAlignment.center
-          : MainAxisAlignment.center,
-      children: [
-        size.width > 600
-            ? Container()
-            // : Lottie.asset(
-            //     'assets/coin.json',
-            //     height: size.height * 0.2,
-            //     width: size.width,
-            //     fit: BoxFit.fill,
-            //   ),
-            : Container(),
-        SizedBox(
-          height: size.height * 0.03,
-        ),
-        Padding(
-          padding: const EdgeInsets.only(left: 20.0),
-          child: Text(
-            signUp,
-            style: kLoginTitleStyle(size),
+    return SingleChildScrollView(
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: [
+          Padding(
+            padding: const EdgeInsets.only(left: 20.0),
+            child: Text(
+              signUp,
+              style: kLoginTitleStyle(size),
+            ),
           ),
-        ),
-        const SizedBox(
-          height: 10,
-        ),
-        Padding(
-          padding: const EdgeInsets.only(left: 20.0),
-          child: Text(
-            createAccount,
-            style: kLoginSubtitleStyle(size),
+          SizedBox(
+            height: size.height * 0.03,
           ),
-        ),
-        SizedBox(
-          height: size.height * 0.03,
-        ),
-        Padding(
-          padding: const EdgeInsets.only(left: 20.0, right: 20),
-          child: Form(
-            key: _formKey,
-            child: Column(
-              children: [
-                /// username
-                TextFormField(
-                  style: kTextFormFieldStyle(),
-                  controller: nameController,
-                  decoration: InputDecoration(
-                    prefixIcon: Icon(
-                      Icons.person,
-                      color: kIconColor,
-                    ),
-                    focusedBorder: kFocusedBorder(),
-                    hintStyle: kHintTextStyle(),
-                    hintText: 'Enter your name',
-                    border: const OutlineInputBorder(
-                      borderRadius: BorderRadius.all(
-                        Radius.circular(15),
-                      ),
-                    ),
-                  ),
-                  validator: (value) {
-                    if (value == null || value.isEmpty) {
-                      return 'Please enter your name';
-                    }
-                    return null;
-                  },
-                ),
-                SizedBox(
-                  height: size.height * 0.02,
-                ),
-
-                /// Gmail
-                TextFormField(
-                  style: kTextFormFieldStyle(),
-                  controller: emailController,
-                  decoration: InputDecoration(
-                    focusedBorder: kFocusedBorder(),
-                    prefixIcon: Icon(
-                      Icons.email_rounded,
-                      color: kIconColor,
-                    ),
-                    hintText: 'Enter your email',
-                    hintStyle: kHintTextStyle(),
-                    border: const OutlineInputBorder(
-                      borderRadius: BorderRadius.all(Radius.circular(15)),
-                    ),
-                  ),
-                  validator: (value) {
-                    if (value == null || value.isEmpty) {
-                      return 'Please enter your email';
-                    } else if (!value.contains('@') || !value.contains('.')) {
-                      return 'Please enter a valid email address';
-                    }
-                    return null;
-                  },
-                ),
-                SizedBox(
-                  height: size.height * 0.02,
-                ),
-
-                /// password
-                ValueListenableBuilder(
-                  valueListenable: _isPasswordVisible,
-                  builder: (context, value, child) => TextFormField(
+          Padding(
+            padding: const EdgeInsets.only(left: 20.0, right: 20),
+            child: Form(
+              key: _formKey,
+              child: Column(
+                children: [
+                  /// username
+                  TextFormField(
                     style: kTextFormFieldStyle(),
-                    controller: passwordController,
-                    obscureText: _isPasswordVisible.value,
+                    controller: nameController,
                     decoration: InputDecoration(
                       prefixIcon: Icon(
-                        Icons.lock_open,
+                        Icons.person,
                         color: kIconColor,
                       ),
                       focusedBorder: kFocusedBorder(),
                       hintStyle: kHintTextStyle(),
-                      suffixIcon: IconButton(
-                        icon: Icon(
-                          color: kIconColor,
-                          _isPasswordVisible.value
-                              ? Icons.visibility
-                              : Icons.visibility_off,
+                      hintText: 'Enter your name',
+                      border: const OutlineInputBorder(
+                        borderRadius: BorderRadius.all(
+                          Radius.circular(15),
                         ),
-                        onPressed: () {
-                          _isPasswordVisible.value = !_isPasswordVisible.value;
-                        },
                       ),
-                      hintText: 'Password',
+                    ),
+                    validator: (value) {
+                      if (value == null || value.isEmpty) {
+                        return 'Please enter your name';
+                      }
+                      return null;
+                    },
+                  ),
+                  SizedBox(
+                    height: size.height * 0.02,
+                  ),
+
+                  /// Gmail
+                  TextFormField(
+                    style: kTextFormFieldStyle(),
+                    controller: emailController,
+                    decoration: InputDecoration(
+                      focusedBorder: kFocusedBorder(),
+                      prefixIcon: Icon(
+                        Icons.email_rounded,
+                        color: kIconColor,
+                      ),
+                      hintText: 'Enter your email',
+                      hintStyle: kHintTextStyle(),
                       border: const OutlineInputBorder(
                         borderRadius: BorderRadius.all(Radius.circular(15)),
                       ),
                     ),
                     validator: (value) {
                       if (value == null || value.isEmpty) {
-                        return 'Please enter some text';
-                      } else if (value.length < 7) {
-                        return 'at least enter 6 characters';
-                      } else if (value.length > 13) {
-                        return 'maximum character is 13';
+                        return 'Please enter your email';
+                      } else if (!value.contains('@') || !value.contains('.')) {
+                        return 'Please enter a valid email address';
                       }
                       return null;
                     },
                   ),
-                ),
+                  SizedBox(
+                    height: size.height * 0.02,
+                  ),
 
-                /// Type of User
-                /// so that we can differentiate between the user and the admin
-                SizedBox(
-                  height: size.height * 0.02,
-                ),
-                ValueListenableBuilder<String>(
-                  valueListenable: _roleNotifier,
-                  builder: (context, role, child) {
-                    return DropdownButtonFormField<String>(
+                  /// password
+                  ValueListenableBuilder(
+                    valueListenable: _isPasswordVisible,
+                    builder: (context, value, child) => TextFormField(
+                      style: kTextFormFieldStyle(),
+                      controller: passwordController,
+                      obscureText: _isPasswordVisible.value,
                       decoration: InputDecoration(
                         prefixIcon: Icon(
-                          Icons.admin_panel_settings,
+                          Icons.lock_open,
                           color: kIconColor,
                         ),
                         focusedBorder: kFocusedBorder(),
                         hintStyle: kHintTextStyle(),
-                        hintText: 'Select role',
+                        suffixIcon: IconButton(
+                          icon: Icon(
+                            color: kIconColor,
+                            _isPasswordVisible.value
+                                ? Icons.visibility
+                                : Icons.visibility_off,
+                          ),
+                          onPressed: () {
+                            _isPasswordVisible.value =
+                                !_isPasswordVisible.value;
+                          },
+                        ),
+                        hintText: 'Password',
                         border: const OutlineInputBorder(
                           borderRadius: BorderRadius.all(Radius.circular(15)),
                         ),
                       ),
-                      value: role,
-                      items: <String>['Admin', 'Manager'].map((String value) {
-                        return DropdownMenuItem<String>(
-                          value: value,
-                          child: Text(value),
-                        );
-                      }).toList(),
-                      onChanged: (newValue) {
-                        _roleNotifier.value = newValue!;
-                      },
                       validator: (value) {
-                        if (value == null) {
-                          return 'Please select a role';
+                        if (value == null || value.isEmpty) {
+                          return 'Please enter some text';
+                        } else if (value.length < 7) {
+                          return 'at least enter 6 characters';
+                        } else if (value.length > 13) {
+                          return 'maximum character is 13';
                         }
                         return null;
                       },
-                    );
-                  },
-                ),
-                SizedBox(
-                  height: size.height * 0.01,
-                ),
-                Text(
-                  'Creating an account means you\'re okay with our Terms of Services and our Privacy Policy',
-                  style: kLoginTermsAndPrivacyStyle(size),
-                  textAlign: TextAlign.center,
-                ),
-                SizedBox(
-                  height: size.height * 0.02,
-                ),
-
-                /// SignUp Button
-                signUpButton(
-                  theme,
-                ),
-                SizedBox(
-                  height: size.height * 0.03,
-                ),
-
-                /// Navigate To Login Screen
-                GestureDetector(
-                  onTap: () {
-                    Navigator.push(
-                        context,
-                        CupertinoPageRoute(
-                            builder: (ctx) => const LoginView()));
-                    nameController.clear();
-                    emailController.clear();
-                    passwordController.clear();
-                    _formKey.currentState?.reset();
-                    _isPasswordVisible.value = true;
-                  },
-                  child: RichText(
-                    text: TextSpan(
-                      text: 'Already have an account?',
-                      style: kHaveAnAccountStyle(size),
-                      children: [
-                        TextSpan(
-                            text: " Login",
-                            style: kLoginOrSignUpTextStyle(size)),
-                      ],
                     ),
                   ),
-                ),
-              ],
+
+                  /// Type of User
+                  /// so that we can differentiate between the user and the admin
+                  SizedBox(
+                    height: size.height * 0.02,
+                  ),
+                  ValueListenableBuilder<String>(
+                    valueListenable: _roleNotifier,
+                    builder: (context, role, child) {
+                      return DropdownButtonFormField<String>(
+                        decoration: InputDecoration(
+                          prefixIcon: Icon(
+                            Icons.admin_panel_settings,
+                            color: kIconColor,
+                          ),
+                          focusedBorder: kFocusedBorder(),
+                          hintStyle: kHintTextStyle(),
+                          hintText: 'Select role',
+                          border: const OutlineInputBorder(
+                            borderRadius: BorderRadius.all(Radius.circular(15)),
+                          ),
+                        ),
+                        value: role,
+                        items: <String>['Admin', 'Manager'].map((String value) {
+                          return DropdownMenuItem<String>(
+                            value: value,
+                            child: Text(value),
+                          );
+                        }).toList(),
+                        onChanged: (newValue) {
+                          _roleNotifier.value = newValue!;
+                        },
+                        validator: (value) {
+                          if (value == null) {
+                            return 'Please select a role';
+                          }
+                          return null;
+                        },
+                      );
+                    },
+                  ),
+                  SizedBox(
+                    height: size.height * 0.01,
+                  ),
+                  Text(
+                    'Creating an account means you\'re okay with our Terms of Services and our Privacy Policy',
+                    style: kLoginTermsAndPrivacyStyle(size),
+                    textAlign: TextAlign.center,
+                  ),
+                  SizedBox(
+                    height: size.height * 0.02,
+                  ),
+
+                  /// SignUp Button
+                  signUpButton(
+                    theme,
+                  ),
+                  SizedBox(
+                    height: size.height * 0.03,
+                  ),
+
+                  /// Navigate To Login Screen
+                  GestureDetector(
+                    onTap: () {
+                      Navigator.push(
+                          context,
+                          CupertinoPageRoute(
+                              builder: (ctx) => const LoginView()));
+                      nameController.clear();
+                      emailController.clear();
+                      passwordController.clear();
+                      _formKey.currentState?.reset();
+                      _isPasswordVisible.value = true;
+                    },
+                    child: RichText(
+                      text: TextSpan(
+                        text: 'Already have an account?',
+                        style: kHaveAnAccountStyle(size),
+                        children: [
+                          TextSpan(
+                              text: " Login",
+                              style: kLoginOrSignUpTextStyle(size)),
+                        ],
+                      ),
+                    ),
+                  ),
+                ],
+              ),
             ),
           ),
-        ),
-      ],
+        ],
+      ),
     );
   }
 
@@ -337,8 +316,8 @@ class _SignUpViewState extends State<SignUpView> {
       height: 55,
       child: ElevatedButton(
         style: ButtonStyle(
-          backgroundColor: MaterialStateProperty.all(cardBackgroundColor),
-          shape: MaterialStateProperty.all(
+          backgroundColor: WidgetStateProperty.all(cardBackgroundColor),
+          shape: WidgetStateProperty.all(
             RoundedRectangleBorder(
               borderRadius: BorderRadius.circular(15),
             ),
@@ -363,8 +342,10 @@ class _SignUpViewState extends State<SignUpView> {
             // print('Password: $password');
 
             if (signInResult == "") {
-              Navigator.pushReplacement(context,
-                  MaterialPageRoute(builder: (context) => CardDetailScan()));
+              Navigator.pushReplacement(
+                  context,
+                  MaterialPageRoute(
+                      builder: (context) => const CardDetailScan()));
             } else {
               showDialog(
                 context: context,
