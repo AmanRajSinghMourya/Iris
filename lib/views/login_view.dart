@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:iris/controller/auth_controller.dart';
-import '../constants.dart';
+import 'package:iris/utilities/constants.dart';
 
 class LoginView extends StatefulWidget {
   const LoginView({Key? key}) : super(key: key);
