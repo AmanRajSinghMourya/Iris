@@ -12,22 +12,6 @@ void main() async {
   runApp(const MyApp());
 }
 
-// class MyApp extends StatelessWidget {
-//   const MyApp({Key? key}) : super(key: key);
-
-//   @override
-//   Widget build(BuildContext context) {
-//     // return const GetMaterialApp(
-//     //   debugShowCheckedModeBanner: false,
-//     //   home: SignUpView(),
-//     // );
-//     return const MaterialApp(
-//       debugShowCheckedModeBanner: false,
-//       home: SignUpView(),
-//     );
-//   }
-// }
-
 class MyApp extends StatelessWidget {
   const MyApp({super.key});
 
