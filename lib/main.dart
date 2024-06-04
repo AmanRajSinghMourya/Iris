@@ -42,9 +42,7 @@ class MyApp extends StatelessWidget {
         fontFamily: 'IBMPlexSans',
         brightness: Brightness.dark,
       ),
-      // home: DashBoard(),
-      home: SignUpView(),
-      // home: const MyWidget(),
+      home: const SignUpView(),
     );
   }
 }

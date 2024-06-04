@@ -1,3 +1,4 @@
+import 'dart:core';
 import 'dart:io';
 
 import 'package:flutter/material.dart';
@@ -41,17 +42,22 @@ class _CardDetailScanState extends State<CardDetailScan> {
     return Scaffold(
       backgroundColor: kBackgroundColor,
       body: Center(
-        child: ListView(
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          mainAxisAlignment: MainAxisAlignment.start,
           children: [
             SizedBox(
-              height: size.height * 0.1,
+              height: size.height * 0.05,
             ),
-            Center(
+            Padding(
+              padding: const EdgeInsets.only(left: 20.0),
               child: Text(
-                pleaseScanCard,
-                style: kLoginTermsAndPrivacyStyle(size),
-                textAlign: TextAlign.center,
+                scanIdCard,
+                style: kLoginSubtitleStyle(size),
               ),
+            ),
+            SizedBox(
+              height: size.height * 0.03,
             ),
             ValueListenableBuilder<File?>(
               valueListenable: _imageFile,
@@ -63,14 +69,46 @@ class _CardDetailScanState extends State<CardDetailScan> {
                     color: cardBackgroundColor,
                     elevation: 2,
                     child: SizedBox(
-                      height: 400,
+                      height: size.height * 0.3,
                       child: Center(
                         child: file == null
-                            ? Text(
-                                pleaseSelectAnImage,
-                                style: kLoginOrSignUpTextStyle(size),
+                            ? Row(
+                                mainAxisAlignment:
+                                    MainAxisAlignment.spaceEvenly,
+                                crossAxisAlignment: CrossAxisAlignment.center,
+                                children: [
+                                  SizedBox(
+                                    height: 55,
+                                    child: ElevatedButton(
+                                      onPressed: () {
+                                        _pickImage(ImageSource.camera);
+                                      },
+                                      child: Icon(
+                                        Icons.camera,
+                                        size: 30,
+                                        color: kIconColor,
+                                      ),
+                                    ),
+                                  ),
+                                  SizedBox(
+                                    height: 55,
+                                    child: ElevatedButton(
+                                      onPressed: () {
+                                        _pickImage(ImageSource.gallery);
+                                      },
+                                      child: Icon(
+                                        Icons.image,
+                                        size: 30,
+                                        color: kIconColor,
+                                      ),
+                                    ),
+                                  ),
+                                ],
                               )
-                            : Image.network(file.toString()),
+                            : Image.file(
+                                file,
+                                fit: BoxFit.cover,
+                              ),
                       ),
                     ),
                   ),
@@ -78,104 +116,61 @@ class _CardDetailScanState extends State<CardDetailScan> {
               },
             ),
             SizedBox(height: size.height * 0.01),
-            Row(
-              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-              crossAxisAlignment: CrossAxisAlignment.center,
-              children: [
-                SizedBox(
-                  width: double.infinity,
-                  height: 55,
-                  child: ElevatedButton(
-                    style: ButtonStyle(
-                      backgroundColor:
-                          WidgetStateProperty.all(cardBackgroundColor),
-                      shape: WidgetStateProperty.all(
-                        RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(15),
-                        ),
-                      ),
-                    ),
-                    onPressed: () {
-                      _pickImage(ImageSource.gallery);
-                    },
-                    child: Text(
-                      gallery,
-                      style: kLoginSubtitleStyle(size),
-                    ),
+            Center(
+              child: SizedBox(
+                height: 55,
+                width: size.width * 0.9,
+                child: ElevatedButton(
+                  style: ButtonStyle(
+                    backgroundColor:
+                        WidgetStateProperty.all<Color>(cardBackgroundColor),
                   ),
-                ),
-                SizedBox(
-                  width: double.infinity,
-                  height: 55,
-                  child: ElevatedButton(
-                    style: ButtonStyle(
-                      backgroundColor:
-                          WidgetStateProperty.all(cardBackgroundColor),
-                      shape: WidgetStateProperty.all(
-                        RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(15),
-                        ),
+                  onPressed: () {
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                        builder: (context) => DashBoard(),
                       ),
-                    ),
-                    onPressed: () {
-                      _pickImage(ImageSource.camera);
-                    },
-                    child: Text(
-                      camera,
-                      style: kLoginSubtitleStyle(size),
-                    ),
-                  ),
-                ),
-              ],
-            ),
-            SizedBox(
-              height: size.height * 0.1,
-            ),
-            Row(
-              children: [
-                SizedBox(
-                  width: double.infinity,
-                  height: 55,
-                  child: ElevatedButton(
-                    style: ButtonStyle(
-                      backgroundColor:
-                          WidgetStateProperty.all(cardBackgroundColor),
-                      shape: WidgetStateProperty.all(
-                        RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(15),
-                        ),
-                      ),
-                    ),
-                    onPressed: () {
-                      Navigator.pushReplacement(
-                        context,
-                        MaterialPageRoute(
-                          builder: (context) => DashBoard(),
-                        ),
+                    );
+                  },
+                  child: ValueListenableBuilder<String>(
+                    valueListenable: extractText,
+                    builder: (context, text, _) {
+                      return Text(
+                        text.isEmpty ? skip : Continue,
+                        style: kButtonStyle(),
                       );
                     },
-                    child: Text(
-                      skip,
-                      style: kLoginSubtitleStyle(size),
-                    ),
                   ),
                 ),
-              ],
+              ),
             ),
+
+            /// Extracted Text
             SizedBox(
-              height: size.height * 0.1,
+              height: size.height * 0.01,
             ),
-            ValueListenableBuilder<String>(
-              valueListenable: extractText,
-              builder: (context, text, _) {
-                return Padding(
-                  padding: const EdgeInsets.all(8.0),
-                  child: Text(
-                    text,
-                    style: kHaveAnAccountStyle(size),
-                  ),
-                );
-              },
+            Padding(
+              padding: const EdgeInsets.all(8.0),
+              child: Card(
+                color: cardBackgroundColor,
+                elevation: 2,
+                child: SizedBox(
+                    height: size.height * 0.4,
+                    child: ValueListenableBuilder<String>(
+                      valueListenable: extractText,
+                      builder: (context, text, _) {
+                        return Center(
+                          child: SingleChildScrollView(
+                            child: Text(
+                              text.isEmpty ? pleaseScanCard : text,
+                              style: kHintTextStyle(),
+                            ),
+                          ),
+                        );
+                      },
+                    )),
+              ),
             ),
           ],
         ),

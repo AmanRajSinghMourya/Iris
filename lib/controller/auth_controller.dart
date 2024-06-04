@@ -5,6 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:iris/dashboard.dart';
 import 'package:iris/user_model/user_model.dart';
+import 'package:iris/views/card_detail/card_detail_scan.dart';
 
 //https://firebase.google.com/docs/auth/flutter/password-auth
 class AuthenticationController extends GetxController {
@@ -52,16 +53,16 @@ class AuthenticationController extends GetxController {
       // make anotehr dialog box
 
       // New user created so make entry in database
-      await makeUser(
-        email,
-        name,
-        role,
-      );
+      // await makeUser(
+      //   email,
+      //   name,
+      //   role,
+      // );
       // Move to home page
       Navigator.push(
         context,
         MaterialPageRoute(
-          builder: (context) => DashBoard(),
+          builder: (context) => CardDetailScan(),
         ),
       );
       isSignInloading.value = false;
@@ -102,7 +103,7 @@ class AuthenticationController extends GetxController {
     );
     try {
       await db
-          .collection(role)
+          .collection("users")
           .doc(authentication.currentUser!.uid)
           .set(userModel.toJson());
     } catch (e) {

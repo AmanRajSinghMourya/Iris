@@ -8,3 +8,4 @@ const String createAccount = 'Create Account';
 const String login = 'Login';
 const String signUp = 'Sign Up';
 const String skip = 'Skip';
+const String Continue = 'Continue';
