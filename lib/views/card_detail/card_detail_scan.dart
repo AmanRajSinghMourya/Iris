@@ -4,9 +4,9 @@ import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:google_mlkit_text_recognition/google_mlkit_text_recognition.dart';
 import 'package:image_picker/image_picker.dart';
-import 'package:iris/dashboard.dart';
 import 'package:iris/utilities/constants.dart';
 import 'package:iris/utilities/strings.dart';
+import 'package:iris/views/detail_form.dart';
 
 class CardDetailScan extends StatefulWidget {
   const CardDetailScan({super.key});
@@ -129,7 +129,7 @@ class _CardDetailScanState extends State<CardDetailScan> {
                     Navigator.push(
                       context,
                       MaterialPageRoute(
-                        builder: (context) => DashBoard(),
+                        builder: (context) => DetailForm(),
                       ),
                     );
                   },
