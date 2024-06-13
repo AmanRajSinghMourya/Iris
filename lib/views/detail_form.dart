@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:iris/controller/auth_controller.dart';
 import 'package:iris/utilities/constants.dart';
-import 'package:iris/views/card_detail/card_detail_scan.dart';
 import 'package:iris/views/signup_view.dart';
 import 'package:share_plus/share_plus.dart';
 
@@ -73,11 +72,6 @@ class _DetailFormState extends State<DetailForm> {
 
   Future<void> addOtherLead() async {
     Navigator.of(context).pop();
-    Navigator.of(context).push(
-      MaterialPageRoute(
-        builder: (context) => const CardDetailScan(),
-      ),
-    );
   }
 
   Future<void> logout() async {

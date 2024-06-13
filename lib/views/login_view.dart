@@ -248,8 +248,6 @@ class _LoginViewState extends State<LoginView> {
           if (_formKey.currentState!.validate()) {
             String email = emailController.text.trim();
             String password = passwordController.text.trim();
-            // print(email);
-            // print(password);
             var loginResult = await authenticationController.loginDetails(
               context,
               email,
