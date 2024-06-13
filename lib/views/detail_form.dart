@@ -127,7 +127,9 @@ class _DetailFormState extends State<DetailForm> {
                         padding: const EdgeInsets.only(
                             left: 20.0, top: 30.0, bottom: 20.0),
                         child: IconButton(
-                          onPressed: () {},
+                          onPressed: () {
+                            logout();
+                          },
                           icon: const Icon(Icons.logout),
                         ),
                       ),

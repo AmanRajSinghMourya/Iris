@@ -1,33 +1,41 @@
 import 'package:flutter/material.dart';
-import 'package:google_fonts/google_fonts.dart';
 
-TextStyle kLoginTitleStyle(Size size) => GoogleFonts.ubuntu(
+TextStyle kLoginTitleStyle(Size size) => TextStyle(
       fontSize: size.height * 0.055,
       fontWeight: FontWeight.bold,
       color: Colors.white,
+      fontFamily: 'Roboto', // Use any default font family if needed
     );
 
-TextStyle kLoginSubtitleStyle(Size size) => GoogleFonts.ubuntu(
+TextStyle kLoginSubtitleStyle(Size size) => TextStyle(
       fontSize: size.height * 0.030,
       color: Colors.white,
+      fontFamily: 'Roboto', // Use any default font family if needed
     );
 
-TextStyle kLoginTermsAndPrivacyStyle(Size size) =>
-    GoogleFonts.ubuntu(fontSize: 15, color: Colors.white70, height: 1.5);
+TextStyle kLoginTermsAndPrivacyStyle(Size size) => TextStyle(
+      fontSize: 15,
+      color: Colors.white70,
+      height: 1.5,
+      fontFamily: 'Roboto', // Use any default font family if needed
+    );
 
-TextStyle kHaveAnAccountStyle(Size size) =>
-    GoogleFonts.ubuntu(fontSize: size.height * 0.022, color: Colors.white);
+TextStyle kHaveAnAccountStyle(Size size) => TextStyle(
+      fontSize: size.height * 0.022,
+      color: Colors.white,
+      fontFamily: 'Roboto', // Use any default font family if needed
+    );
 
-TextStyle kLoginOrSignUpTextStyle(
-  Size size,
-) =>
-    GoogleFonts.ubuntu(
+TextStyle kLoginOrSignUpTextStyle(Size size) => TextStyle(
       fontSize: size.height * 0.022,
       fontWeight: FontWeight.w500,
       color: Colors.deepPurpleAccent,
+      fontFamily: 'Roboto', // Use any default font family if needed
     );
 
-TextStyle kTextFormFieldStyle() => const TextStyle(color: Colors.white);
+TextStyle kTextFormFieldStyle() => const TextStyle(
+      color: Colors.white,
+    );
 
 TextStyle kButtonStyle() => const TextStyle(
       color: Colors.white,
@@ -36,7 +44,9 @@ TextStyle kButtonStyle() => const TextStyle(
       letterSpacing: 1.5,
     );
 
-TextStyle kHintTextStyle() => TextStyle(color: Colors.white.withOpacity(0.7));
+TextStyle kHintTextStyle() => TextStyle(
+      color: Colors.white.withOpacity(0.7),
+    );
 
 InputBorder kFocusedBorder() => OutlineInputBorder(
       borderRadius: BorderRadius.circular(15),

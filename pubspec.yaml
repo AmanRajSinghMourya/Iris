@@ -35,9 +35,6 @@ dependencies:
   # The following adds the Cupertino Icons font to your application.
   # Use with the CupertinoIcons class for iOS style icons.
   
-  
-  google_fonts: ^6.2.1
-  lottie: ^1.4.2
   firebase_core: ^2.30.1
   firebase_database: ^10.5.4
   cloud_firestore: ^4.17.2
@@ -78,27 +75,10 @@ flutter:
   #   - assets/svg/
   #   - assets/wave.json
   
-  fonts:
-    - family: IBMPlexSans
-      fonts:
-        - asset: assets/fonts/IBMPlexSans-Bold.ttf
-          weight: 900
-        - asset: assets/fonts/IBMPlexSans-Bold.ttf
-          weight: 800
-        - asset: assets/fonts/IBMPlexSans-Bold.ttf
-          weight: 700
-        - asset: assets/fonts/IBMPlexSans-SemiBold.ttf
-          weight: 600
-        - asset: assets/fonts/IBMPlexSans-Medium.ttf
-          weight: 500
-        - asset: assets/fonts/IBMPlexSans-Regular.ttf
-          weight: 400
-        - asset: assets/fonts/IBMPlexSans-Light.ttf
-          weight: 300
-        - asset: assets/fonts/IBMPlexSans-ExtraLight.ttf
-          weight: 200
-        - asset: assets/fonts/IBMPlexSans-Thin.ttf
-          weight: 100 
+  #fonts:
+  #  - family: IBMPlexSans
+    #  fonts:
+        
   # An image asset can refer to one or more resolution-specific "variants", see
   # https://flutter.dev/assets-and-images/#resolution-aware
 
