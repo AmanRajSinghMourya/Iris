@@ -30,7 +30,7 @@ class _SignUpViewState extends State<SignUpView> {
     emailController.dispose();
     passwordController.dispose();
     _isPasswordVisible.dispose();
-    authenticationController.dispose();
+    authenticationController.isSignInloading.dispose();
     _roleNotifier.dispose();
     super.dispose();
   }
@@ -205,10 +205,6 @@ class _SignUpViewState extends State<SignUpView> {
                       validator: (value) {
                         if (value == null || value.isEmpty) {
                           return 'Please enter some text';
-                        } else if (value.length < 7) {
-                          return 'at least enter 6 characters';
-                        } else if (value.length > 13) {
-                          return 'maximum character is 13';
                         }
                         return null;
                       },
@@ -337,10 +333,6 @@ class _SignUpViewState extends State<SignUpView> {
               name,
               role,
             );
-            // print('Name: $name');
-            // print('Email: $email');
-            // print('Password: $password');
-
             if (signInResult == "") {
               Navigator.pushReplacement(
                   context,

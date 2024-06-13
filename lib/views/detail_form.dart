@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/rendering.dart';
 import 'package:iris/utilities/constants.dart';
+import 'package:iris/views/card_detail/card_detail_scan.dart';
+import 'package:share_plus/share_plus.dart';
 
 class DetailForm extends StatefulWidget {
   const DetailForm({super.key});
@@ -12,31 +13,83 @@ class DetailForm extends StatefulWidget {
 class _DetailFormState extends State<DetailForm> {
   final productDetail = TextEditingController();
   final _formKey = GlobalKey<FormState>();
-  final ValueNotifier<String> leadStatus = ValueNotifier<String>('');
   final remarksController = TextEditingController();
 
-  final ValueNotifier<List<Map<String, dynamic>>> regionDetail = ValueNotifier([
-    {'title': 'North', 'isChecked': false},
-    {'title': 'South', 'isChecked': false},
-    {'title': 'West', 'isChecked': false},
-    {'title': 'East', 'isChecked': false},
-    {'title': 'Central', 'isChecked': false},
-  ]);
+  final ValueNotifier<String?> _selectedRegion = ValueNotifier<String?>(null);
+  final List<String> _regions = ['North', 'South', 'West', 'East', 'Central'];
 
-  final ValueNotifier<List<Map<String, dynamic>>> tasksNotifier =
-      ValueNotifier([
-    {'title': 'Send Brochure', 'isChecked': false},
-    {'title': 'Send Catalog', 'isChecked': false},
-    {'title': 'Send Product Details', 'isChecked': false},
-    {'title': 'Schedule a Meeting', 'isChecked': false},
-    {'title': 'Schedule a Demo', 'isChecked': false},
-  ]);
+  final ValueNotifier<String?> nextCommunication = ValueNotifier<String?>(null);
+  final List<String> nextCommunicationStatus = [
+    'Send Brochure',
+    'Send Catalog',
+    'Send Product Details',
+    'Schedule a Meeting',
+    'Schedule a Demo',
+  ];
+
+  final List<String> leadStatusTypes = [
+    'Hot - Buying Immediately',
+    'Warm - Not buying immediately',
+    'Cold - Not interested',
+  ];
+  final ValueNotifier<String?> _leadStatus = ValueNotifier<String?>(null);
+
+  Future<void> shareFrom() async {
+    if (_formKey.currentState!.validate()) {
+      print('Product Detail: ${productDetail.text}');
+      print('Region: ${_selectedRegion.value}');
+      print('Lead Status: ${_leadStatus.value}');
+      print('Next Communication: ${nextCommunication.value}');
+      print('Remarks: ${remarksController.text}');
+      final String shareContent = '''
+                  Product Detail: $productDetail
+                  Region: ${_selectedRegion.value}
+                  Lead Status:${_leadStatus.value}
+                  Next Communication:  ${nextCommunication.value}
+                  Remarks:  ${remarksController.text}
+                    ''';
+      Share.share(shareContent);
+      //clear all the fields
+      productDetail.clear();
+      _selectedRegion.value = null;
+      _leadStatus.value = null;
+      nextCommunication.value = null;
+      remarksController.clear();
+    } else {
+      showDialog(
+          context: context,
+          builder: (context) {
+            return AlertDialog(
+              title: const Text('Error'),
+              content: const Text('Please fill all the fields'),
+              actions: [
+                TextButton(
+                  onPressed: () {
+                    Navigator.pop(context);
+                  },
+                  child: const Text('OK'),
+                )
+              ],
+            );
+          });
+    }
+  }
+
+  Future<void> addOtherLead() async {
+    Navigator.of(context).pop();
+    Navigator.of(context).push(
+      MaterialPageRoute(
+        builder: (context) => const CardDetailScan(),
+      ),
+    );
+  }
+
   @override
   void dispose() {
+    _leadStatus.dispose();
+    _selectedRegion.dispose();
     productDetail.dispose();
-    regionDetail.dispose();
-    leadStatus.dispose();
-    tasksNotifier.dispose();
+    nextCommunication.dispose();
     super.dispose();
   }
 
@@ -44,30 +97,34 @@ class _DetailFormState extends State<DetailForm> {
   Widget build(BuildContext context) {
     var size = MediaQuery.of(context).size;
     return Scaffold(
-      appBar: AppBar(
-        elevation: 0,
-      ),
       body: LayoutBuilder(
         builder: (context, constraints) {
           return SingleChildScrollView(
             child: Center(
               child: Column(
-                crossAxisAlignment: CrossAxisAlignment.center,
+                crossAxisAlignment: CrossAxisAlignment.start,
+                mainAxisAlignment: MainAxisAlignment.start,
                 children: [
-                  SizedBox(
-                    height: constraints.maxHeight * 0.1,
-                    width: constraints.maxWidth * 0.5,
+                  Padding(
+                    padding: const EdgeInsets.only(
+                        left: 20.0, top: 30.0, bottom: 20.0),
+                    child: Text(
+                      "Details Form",
+                      style: kLoginTitleStyle(size),
+                    ),
                   ),
                   Padding(
                     padding: const EdgeInsets.only(left: 20.0, right: 20),
                     child: Form(
                       key: _formKey,
-                      child: ListView(
+                      child: Column(
+                        mainAxisAlignment: MainAxisAlignment.start,
+                        crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
                           Text(
                             'Products/Services Interested In?',
                             style: kLoginTermsAndPrivacyStyle(size),
-                            textAlign: TextAlign.center,
+                            textAlign: TextAlign.start,
                           ),
                           TextFormField(
                             controller: productDetail,
@@ -88,27 +145,35 @@ class _DetailFormState extends State<DetailForm> {
                           Text(
                             'Visitor Region',
                             style: kLoginTermsAndPrivacyStyle(size),
-                            textAlign: TextAlign.center,
                           ),
-                          ValueListenableBuilder<List<Map<String, dynamic>>>(
-                            valueListenable: regionDetail,
-                            builder: (context, tasks, child) {
-                              return ListView.builder(
-                                itemCount: tasks.length,
-                                itemBuilder: (context, index) {
-                                  return CheckboxListTile(
-                                    title: Text(tasks[index]['title']),
-                                    value: tasks[index]['isChecked'],
-                                    onChanged: (bool? value) {
-                                      // Update the task's checked status and notify listeners
-                                      regionDetail.value =
-                                          List.from(regionDetail.value)
-                                            ..[index] = {
-                                              'title': tasks[index]['title'],
-                                              'isChecked': value
-                                            };
-                                    },
+                          ValueListenableBuilder<String?>(
+                            valueListenable: _selectedRegion,
+                            builder: (context, selectedRegion, child) {
+                              return DropdownButtonFormField<String>(
+                                decoration: InputDecoration(
+                                  prefixIcon: const Icon(
+                                    Icons.location_city,
+                                  ),
+                                  focusedBorder: kFocusedBorder(),
+                                  hintStyle: kHintTextStyle(),
+                                  hintText: 'Select region',
+                                  border: kFocusedBorder(),
+                                ),
+                                value: selectedRegion,
+                                items: _regions.map((String region) {
+                                  return DropdownMenuItem<String>(
+                                    value: region,
+                                    child: Text(region),
                                   );
+                                }).toList(),
+                                onChanged: (newValue) {
+                                  _selectedRegion.value = newValue;
+                                },
+                                validator: (value) {
+                                  if (value == null || value.isEmpty) {
+                                    return 'Please select a region';
+                                  }
+                                  return null;
                                 },
                               );
                             },
@@ -119,38 +184,36 @@ class _DetailFormState extends State<DetailForm> {
                           Text(
                             'Lead Status',
                             style: kLoginTermsAndPrivacyStyle(size),
-                            textAlign: TextAlign.center,
                           ),
-                          ValueListenableBuilder<String>(
-                            valueListenable: leadStatus,
-                            builder: (context, role, child) {
+                          ValueListenableBuilder<String?>(
+                            valueListenable: _leadStatus,
+                            builder: (context, leads, child) {
                               return DropdownButtonFormField<String>(
                                 decoration: InputDecoration(
+                                  prefixIcon: const Icon(
+                                    Icons.person,
+                                  ),
                                   focusedBorder: kFocusedBorder(),
                                   hintStyle: kHintTextStyle(),
                                   hintText: 'Lead Status',
-                                  border: const OutlineInputBorder(
-                                    borderRadius:
-                                        BorderRadius.all(Radius.circular(15)),
-                                  ),
+                                  border: kFocusedBorder(),
                                 ),
-                                value: role,
-                                items: <String>[
-                                  'Hot - Buying Immediately',
-                                  'Warm - Buying within 3 months',
-                                  'Cold - General Enquiry',
-                                ].map((String value) {
+                                value: leads,
+                                items: leadStatusTypes.map((String region) {
                                   return DropdownMenuItem<String>(
-                                    value: value,
-                                    child: Text(value),
+                                    value: region,
+                                    child: FittedBox(
+                                      fit: BoxFit.contain,
+                                      child: Text(region),
+                                    ),
                                   );
                                 }).toList(),
                                 onChanged: (newValue) {
-                                  leadStatus.value = newValue!;
+                                  _leadStatus.value = newValue;
                                 },
                                 validator: (value) {
-                                  if (value == null) {
-                                    return 'Please select a region';
+                                  if (value == null || value.isEmpty) {
+                                    return 'Please select a status';
                                   }
                                   return null;
                                 },
@@ -165,25 +228,35 @@ class _DetailFormState extends State<DetailForm> {
                             style: kLoginTermsAndPrivacyStyle(size),
                             textAlign: TextAlign.center,
                           ),
-                          ValueListenableBuilder<List<Map<String, dynamic>>>(
-                            valueListenable: tasksNotifier,
-                            builder: (context, tasks, child) {
-                              return ListView.builder(
-                                itemCount: tasks.length,
-                                itemBuilder: (context, index) {
-                                  return CheckboxListTile(
-                                    title: Text(tasks[index]['title']),
-                                    value: tasks[index]['isChecked'],
-                                    onChanged: (bool? value) {
-                                      // Update the task's checked status and notify listeners
-                                      tasksNotifier.value =
-                                          List.from(tasksNotifier.value)
-                                            ..[index] = {
-                                              'title': tasks[index]['title'],
-                                              'isChecked': value
-                                            };
-                                    },
+                          ValueListenableBuilder<String?>(
+                            valueListenable: nextCommunication,
+                            builder: (context, lead, child) {
+                              return DropdownButtonFormField<String>(
+                                decoration: InputDecoration(
+                                  prefixIcon: const Icon(
+                                    Icons.location_city,
+                                  ),
+                                  focusedBorder: kFocusedBorder(),
+                                  hintStyle: kHintTextStyle(),
+                                  hintText: 'Lead Status',
+                                  border: kFocusedBorder(),
+                                ),
+                                value: lead,
+                                items: nextCommunicationStatus
+                                    .map((String region) {
+                                  return DropdownMenuItem<String>(
+                                    value: region,
+                                    child: Text(region),
                                   );
+                                }).toList(),
+                                onChanged: (newValue) {
+                                  nextCommunication.value = newValue;
+                                },
+                                validator: (value) {
+                                  if (value == null || value.isEmpty) {
+                                    return 'Please select a status';
+                                  }
+                                  return null;
                                 },
                               );
                             },
@@ -198,7 +271,7 @@ class _DetailFormState extends State<DetailForm> {
                           ),
                           TextField(
                             controller: remarksController,
-                            maxLines: 5,
+                            maxLines: 2,
                             style: kTextFormFieldStyle(),
                             decoration: InputDecoration(
                               focusedBorder: kFocusedBorder(),
@@ -230,7 +303,34 @@ class _DetailFormState extends State<DetailForm> {
                                 'Submit',
                                 style: kButtonStyle(),
                               ),
-                              onPressed: () {},
+                              onPressed: () {
+                                shareFrom();
+                              },
+                            ),
+                          ),
+                          SizedBox(
+                            height: size.height * 0.03,
+                          ),
+                          SizedBox(
+                            width: double.infinity,
+                            height: 55,
+                            child: ElevatedButton(
+                              style: ButtonStyle(
+                                backgroundColor: WidgetStateProperty.all(
+                                    cardBackgroundColor),
+                                shape: WidgetStateProperty.all(
+                                  RoundedRectangleBorder(
+                                    borderRadius: BorderRadius.circular(15),
+                                  ),
+                                ),
+                              ),
+                              child: Text(
+                                'Add Lead',
+                                style: kButtonStyle(),
+                              ),
+                              onPressed: () {
+                                addOtherLead();
+                              },
                             ),
                           ),
                         ],

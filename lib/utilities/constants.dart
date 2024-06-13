@@ -50,5 +50,3 @@ final kIconColor = Colors.white.withOpacity(0.7);
 
 const primaryColorCode = 0xFFA9DFD8;
 const cardBackgroundColor = Color(0xFF21222D);
-//0xFFA9DFD8;
-
