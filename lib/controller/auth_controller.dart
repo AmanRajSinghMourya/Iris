@@ -3,7 +3,6 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 
 import 'package:get/get.dart';
-import 'package:iris/dashboard.dart';
 import 'package:iris/user_model/user_model.dart';
 import 'package:iris/views/card_detail/card_detail_scan.dart';
 
@@ -23,8 +22,8 @@ class AuthenticationController extends GetxController {
     try {
       await authentication.signInWithEmailAndPassword(
           email: email, password: password);
-      Navigator.pushReplacement(
-          context, MaterialPageRoute(builder: (context) => DashBoard()));
+      Navigator.pushReplacement(context,
+          MaterialPageRoute(builder: (context) => const CardDetailScan()));
       return "";
     } on FirebaseAuthException catch (e) {
       if (e.code == 'user-not-found') {
@@ -50,19 +49,11 @@ class AuthenticationController extends GetxController {
         email: email,
         password: password,
       );
-      // make anotehr dialog box
 
-      // New user created so make entry in database
-      // await makeUser(
-      //   email,
-      //   name,
-      //   role,
-      // );
-      // Move to home page
       Navigator.push(
         context,
         MaterialPageRoute(
-          builder: (context) => CardDetailScan(),
+          builder: (context) => const CardDetailScan(),
         ),
       );
       isSignInloading.value = false;

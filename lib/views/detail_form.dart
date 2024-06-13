@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:iris/controller/auth_controller.dart';
 import 'package:iris/utilities/constants.dart';
 import 'package:iris/views/card_detail/card_detail_scan.dart';
+import 'package:iris/views/signup_view.dart';
 import 'package:share_plus/share_plus.dart';
 
 class DetailForm extends StatefulWidget {
@@ -14,7 +16,8 @@ class _DetailFormState extends State<DetailForm> {
   final productDetail = TextEditingController();
   final _formKey = GlobalKey<FormState>();
   final remarksController = TextEditingController();
-
+  AuthenticationController authenticationController =
+      AuthenticationController();
   final ValueNotifier<String?> _selectedRegion = ValueNotifier<String?>(null);
   final List<String> _regions = ['North', 'South', 'West', 'East', 'Central'];
 
@@ -33,23 +36,16 @@ class _DetailFormState extends State<DetailForm> {
     'Cold - Not interested',
   ];
   final ValueNotifier<String?> _leadStatus = ValueNotifier<String?>(null);
-
+  final ValueNotifier<bool> isLoading = ValueNotifier(false);
   Future<void> shareFrom() async {
     if (_formKey.currentState!.validate()) {
-      print('Product Detail: ${productDetail.text}');
-      print('Region: ${_selectedRegion.value}');
-      print('Lead Status: ${_leadStatus.value}');
-      print('Next Communication: ${nextCommunication.value}');
-      print('Remarks: ${remarksController.text}');
-      final String shareContent = '''
-                  Product Detail: $productDetail
-                  Region: ${_selectedRegion.value}
-                  Lead Status:${_leadStatus.value}
-                  Next Communication:  ${nextCommunication.value}
-                  Remarks:  ${remarksController.text}
-                    ''';
-      Share.share(shareContent);
+      final String shareContent =
+          'Product Detail: ${productDetail.text}\nRegion: ${_selectedRegion.value}\nLead Status:${_leadStatus.value}\nNext Communication:  ${nextCommunication.value}\nRemarks:  ${remarksController.text}';
+      print(shareContent);
+      isLoading.value = true;
+      await Share.share(shareContent);
       //clear all the fields
+      isLoading.value = false;
       productDetail.clear();
       _selectedRegion.value = null;
       _leadStatus.value = null;
@@ -84,8 +80,20 @@ class _DetailFormState extends State<DetailForm> {
     );
   }
 
+  Future<void> logout() async {
+    authenticationController.logout();
+    Navigator.of(context).pop();
+    Navigator.of(context).pushReplacement(
+      MaterialPageRoute(
+        builder: (context) => const SignUpView(),
+      ),
+    );
+    //logout the user
+  }
+
   @override
   void dispose() {
+    authenticationController.dispose();
     _leadStatus.dispose();
     _selectedRegion.dispose();
     productDetail.dispose();
@@ -105,13 +113,25 @@ class _DetailFormState extends State<DetailForm> {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 mainAxisAlignment: MainAxisAlignment.start,
                 children: [
-                  Padding(
-                    padding: const EdgeInsets.only(
-                        left: 20.0, top: 30.0, bottom: 20.0),
-                    child: Text(
-                      "Details Form",
-                      style: kLoginTitleStyle(size),
-                    ),
+                  Row(
+                    children: [
+                      Padding(
+                        padding: const EdgeInsets.only(
+                            left: 20.0, top: 30.0, bottom: 20.0),
+                        child: Text(
+                          "Details Form",
+                          style: kLoginTitleStyle(size),
+                        ),
+                      ),
+                      Padding(
+                        padding: const EdgeInsets.only(
+                            left: 20.0, top: 30.0, bottom: 20.0),
+                        child: IconButton(
+                          onPressed: () {},
+                          icon: const Icon(Icons.logout),
+                        ),
+                      ),
+                    ],
                   ),
                   Padding(
                     padding: const EdgeInsets.only(left: 20.0, right: 20),
@@ -299,9 +319,16 @@ class _DetailFormState extends State<DetailForm> {
                                   ),
                                 ),
                               ),
-                              child: Text(
-                                'Submit',
-                                style: kButtonStyle(),
+                              child: ValueListenableBuilder<bool>(
+                                valueListenable: isLoading,
+                                builder: (context, loading, child) {
+                                  return loading
+                                      ? const CircularProgressIndicator()
+                                      : Text(
+                                          'Submit',
+                                          style: kButtonStyle(),
+                                        );
+                                },
                               ),
                               onPressed: () {
                                 shareFrom();
@@ -325,7 +352,7 @@ class _DetailFormState extends State<DetailForm> {
                                 ),
                               ),
                               child: Text(
-                                'Add Lead',
+                                'Add Other Lead',
                                 style: kButtonStyle(),
                               ),
                               onPressed: () {
