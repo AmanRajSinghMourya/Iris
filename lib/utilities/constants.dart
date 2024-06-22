@@ -13,7 +13,7 @@ TextStyle kLoginSubtitleStyle(Size size) => TextStyle(
       fontFamily: 'Roboto', // Use any default font family if needed
     );
 
-TextStyle kLoginTermsAndPrivacyStyle(Size size) => TextStyle(
+TextStyle kLoginTermsAndPrivacyStyle(Size size) => const TextStyle(
       fontSize: 15,
       color: Colors.white70,
       height: 1.5,
@@ -35,15 +35,19 @@ TextStyle kLoginOrSignUpTextStyle(Size size) => TextStyle(
 
 TextStyle kTextFormFieldStyle() => const TextStyle(
       color: Colors.white,
+      fontSize: 16,
     );
 
 TextStyle kButtonStyle() => const TextStyle(
       color: Colors.white,
       fontSize: 18,
-      fontWeight: FontWeight.bold,
-      letterSpacing: 1.5,
+      fontWeight: FontWeight.w600,
     );
-
+TextStyle kCardTitleStyle() => const TextStyle(
+      color: Colors.white,
+      fontSize: 16,
+      fontWeight: FontWeight.bold,
+    );
 TextStyle kHintTextStyle() => TextStyle(
       color: Colors.white.withOpacity(0.7),
     );
