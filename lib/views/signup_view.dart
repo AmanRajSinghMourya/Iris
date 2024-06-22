@@ -4,7 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:iris/controller/auth_controller.dart';
 import 'package:iris/utilities/constants.dart';
 import 'package:iris/utilities/strings.dart';
-import 'package:iris/views/card_detail/card_detail_scan.dart';
+import 'package:iris/views/card_detail_scan.dart';
 import '../views/login_view.dart';
 
 class SignUpView extends StatefulWidget {
