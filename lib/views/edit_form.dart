@@ -232,30 +232,6 @@ class _EditFormState extends State<EditForm> {
                               },
                             ),
                             customSizedBox(size),
-                            // SizedBox(
-                            //   height: 55,
-                            //   width: double.infinity,
-                            //   child: ElevatedButton(
-                            //     style: ButtonStyle(
-                            //       padding: WidgetStateProperty.all(
-                            //           const EdgeInsets.all(15)),
-                            //       backgroundColor: WidgetStateProperty.all(
-                            //           cardBackgroundColor),
-                            //       shape: WidgetStateProperty.all(
-                            //         RoundedRectangleBorder(
-                            //           borderRadius: BorderRadius.circular(15),
-                            //         ),
-                            //       ),
-                            //     ),
-                            //     child: Text(
-                            //       'Save',
-                            //       style: kButtonStyle(),
-                            //     ),
-                            //     onPressed: () {
-                            //       saveForm();
-                            //     },
-                            //   ),
-                            // ),
                             CustomButton(
                               onPressed: () {
                                 saveForm();
