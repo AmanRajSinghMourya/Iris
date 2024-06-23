@@ -1,27 +1,20 @@
 import 'package:flutter/material.dart';
-import 'package:hive/hive.dart';
-import 'package:iris/controller/auth_controller.dart';
-import 'package:iris/controller/boxes.dart';
 import 'package:iris/controller/save_details.dart';
 import 'package:iris/utilities/button_widget.dart';
 import 'package:iris/utilities/constants.dart';
-import 'package:iris/views/signup_view.dart';
-import 'package:iris/views/view_saved_details.dart';
-import 'package:share_plus/share_plus.dart';
 
-class DetailForm extends StatefulWidget {
-  const DetailForm({super.key});
+class EditForm extends StatefulWidget {
+  const EditForm({super.key, required this.details});
+  final SaveDetails details;
 
   @override
-  State<DetailForm> createState() => _DetailFormState();
+  State<EditForm> createState() => _EditFormState();
 }
 
-class _DetailFormState extends State<DetailForm> {
+class _EditFormState extends State<EditForm> {
   final productDetail = TextEditingController();
   final _formKey = GlobalKey<FormState>();
-  final remarksController = TextEditingController();
-  AuthenticationController authenticationController =
-      AuthenticationController();
+
   final ValueNotifier<String?> _selectedRegion = ValueNotifier<String?>(null);
   final List<String> _regions = ['North', 'South', 'West', 'East', 'Central'];
 
@@ -40,71 +33,39 @@ class _DetailFormState extends State<DetailForm> {
     'Cold - Not interested',
   ];
   final ValueNotifier<String?> _leadStatus = ValueNotifier<String?>(null);
-  final ValueNotifier<bool> isLoading = ValueNotifier(false);
+
+  @override
+  void initState() {
+    productDetail.text = widget.details.productDetail!;
+    _selectedRegion.value = widget.details.region!;
+    _leadStatus.value = widget.details.leadStatus!;
+    nextCommunication.value = widget.details.nextCommunication!;
+    super.initState();
+  }
+
+  void dispsose() {
+    productDetail.dispose();
+    _selectedRegion.dispose();
+    _leadStatus.dispose();
+    nextCommunication.dispose();
+    super.dispose();
+  }
 
   Future<void> saveForm() async {
     if (_formKey.currentState!.validate()) {
-      final saveDetails = SaveDetails()
-        ..productDetail = productDetail.text
-        ..region = _selectedRegion.value
-        ..leadStatus = _leadStatus.value
-        ..nextCommunication = nextCommunication.value
-        ..remarks = remarksController.text;
-
-      final box = Boxes.getSaveDetails();
-      box.add(saveDetails);
-      isLoading.value = false;
+      setState(() {
+        widget.details.productDetail = productDetail.text;
+        widget.details.region = _selectedRegion.value;
+        widget.details.leadStatus = _leadStatus.value;
+        widget.details.nextCommunication = nextCommunication.value;
+      });
+      widget.details.save();
       productDetail.clear();
       _selectedRegion.value = null;
       _leadStatus.value = null;
       nextCommunication.value = null;
-      remarksController.clear();
     }
-  }
-
-  Future<void> shareFrom() async {
-    if (_formKey.currentState!.validate()) {
-      final String shareContent =
-          'Product Detail: ${productDetail.text}\nRegion: ${_selectedRegion.value}\nLead Status:${_leadStatus.value}\nNext Communication:  ${nextCommunication.value}\nRemarks:  ${remarksController.text}';
-
-      isLoading.value = true;
-      await Share.share(shareContent);
-
-      //clear all the fields
-      isLoading.value = false;
-      productDetail.clear();
-      _selectedRegion.value = null;
-      _leadStatus.value = null;
-      nextCommunication.value = null;
-      remarksController.clear();
-    }
-  }
-
-  Future<void> addOtherLead() async {
     Navigator.of(context).pop();
-  }
-
-  Future<void> logout() async {
-    authenticationController.logout();
-    Navigator.of(context).pop();
-    Navigator.of(context).pushReplacement(
-      MaterialPageRoute(
-        builder: (context) => const SignUpView(),
-      ),
-    );
-  }
-
-  @override
-  void dispose() {
-    authenticationController.dispose();
-    _leadStatus.dispose();
-    _selectedRegion.dispose();
-    productDetail.dispose();
-    nextCommunication.dispose();
-    remarksController.dispose();
-    isLoading.dispose();
-    Hive.close();
-    super.dispose();
   }
 
   @override
@@ -113,30 +74,10 @@ class _DetailFormState extends State<DetailForm> {
     return Scaffold(
       appBar: AppBar(
         title: Text(
-          'Details Form',
+          'Edit Form',
           style: kButtonStyle(),
         ),
         backgroundColor: kBackgroundColor,
-        actions: [
-          IconButton(
-            onPressed: () {
-              Navigator.of(context).push(
-                MaterialPageRoute(
-                  builder: (context) {
-                    return const ViewSavedDetails();
-                  },
-                ),
-              );
-            },
-            icon: const Icon(Icons.save_outlined),
-          ),
-          IconButton(
-            onPressed: () {
-              logout();
-            },
-            icon: const Icon(Icons.logout),
-          ),
-        ],
       ),
       body: SafeArea(
         child: LayoutBuilder(
@@ -148,7 +89,8 @@ class _DetailFormState extends State<DetailForm> {
                   mainAxisAlignment: MainAxisAlignment.start,
                   children: [
                     Padding(
-                      padding: const EdgeInsets.only(left: 20.0, right: 20),
+                      padding: const EdgeInsets.only(
+                          left: 20.0, right: 20, top: 20.0),
                       child: Form(
                         key: _formKey,
                         child: Column(
@@ -290,71 +232,20 @@ class _DetailFormState extends State<DetailForm> {
                               },
                             ),
                             customSizedBox(size),
-                            Text(
-                              'Additoinal Remarks',
-                              style: kLoginTermsAndPrivacyStyle(size),
-                              textAlign: TextAlign.center,
-                            ),
-                            TextField(
-                              controller: remarksController,
-                              maxLines: 2,
-                              style: kTextFormFieldStyle(),
-                              decoration: InputDecoration(
-                                focusedBorder: kFocusedBorder(),
-                                hintStyle: kHintTextStyle(),
-                                border: const OutlineInputBorder(
-                                  borderRadius: BorderRadius.all(
-                                    Radius.circular(15),
-                                  ),
-                                ),
-                              ),
-                            ),
-                            customSizedBox(size),
-                            Row(
-                              children: [
-                                Expanded(
-                                    child: CustomButton(
-                                  onPressed: () {
-                                    saveForm();
-                                  },
-                                  child: Text(
-                                    'Save',
-                                    style: kButtonStyle(),
-                                  ),
-                                )),
-                                const SizedBox(
-                                  width: 20,
-                                ),
-                                Expanded(
-                                    child: CustomButton(
-                                  onPressed: () {
-                                    shareFrom();
-                                  },
-                                  child: ValueListenableBuilder<bool>(
-                                    valueListenable: isLoading,
-                                    builder: (context, loading, child) {
-                                      return loading
-                                          ? const CircularProgressIndicator()
-                                          : Text(
-                                              'Share',
-                                              style: kButtonStyle(),
-                                            );
-                                    },
-                                  ),
-                                )),
-                              ],
-                            ),
-                            customSizedBox(size),
                             CustomButton(
-                              width: double.infinity,
                               onPressed: () {
-                                addOtherLead();
+                                saveForm();
                               },
                               child: Text(
-                                'Add Other Lead',
+                                'Save',
                                 style: kButtonStyle(),
                               ),
-                            )
+                              width: double.infinity,
+                            ),
+                            const SizedBox(
+                              width: 20,
+                            ),
+                            customSizedBox(size),
                           ],
                         ),
                       ),

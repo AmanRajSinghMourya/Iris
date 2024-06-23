@@ -3,6 +3,7 @@ import 'package:hive_flutter/adapters.dart';
 import 'package:iris/controller/boxes.dart';
 import 'package:iris/controller/save_details.dart';
 import 'package:iris/utilities/constants.dart';
+import 'package:iris/views/edit_form.dart';
 
 class ViewSavedDetails extends StatefulWidget {
   const ViewSavedDetails({super.key});
@@ -17,7 +18,7 @@ class _ViewSavedDetailsState extends State<ViewSavedDetails> {
     return Scaffold(
       appBar: AppBar(
         title: const Text('Preview'),
-        centerTitle: true,
+        backgroundColor: kBackgroundColor,
       ),
       body: ValueListenableBuilder(
         valueListenable: Boxes.getSaveDetails().listenable(),
@@ -38,54 +39,32 @@ class _ViewSavedDetailsState extends State<ViewSavedDetails> {
                       mainAxisAlignment: MainAxisAlignment.spaceAround,
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
+                        detailRow(detail.productDetail!, 'Product Detail : '),
+                        detailRow(detail.region!, 'Region : '),
+                        detailRow(detail.leadStatus!, 'Lead Status : '),
+                        detailRow(
+                            detail.nextCommunication!, 'Communicatoin : '),
                         Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceAround,
                           children: [
-                            Text(
-                              'Product : ',
-                              style: kCardTitleStyle(),
+                            IconButton(
+                              onPressed: () {
+                                Navigator.of(context).push(MaterialPageRoute(
+                                  builder: (context) => EditForm(
+                                    details: detail,
+                                  ),
+                                ));
+                              },
+                              icon: const Icon(Icons.edit),
                             ),
-                            Text(
-                              detail.productDetail ?? 'null',
-                              style: kTextFormFieldStyle(),
-                            )
-                          ],
-                        ),
-                        Row(
-                          children: [
-                            Text(
-                              'Region : ',
-                              style: kCardTitleStyle(),
+                            IconButton(
+                              onPressed: () {
+                                detail.delete();
+                              },
+                              icon: const Icon(Icons.delete),
                             ),
-                            Text(
-                              detail.region ?? 'null',
-                              style: kTextFormFieldStyle(),
-                            )
                           ],
-                        ),
-                        Row(
-                          children: [
-                            Text(
-                              'Lead Status : ',
-                              style: kCardTitleStyle(),
-                            ),
-                            Text(
-                              detail.leadStatus ?? 'null',
-                              style: kTextFormFieldStyle(),
-                            )
-                          ],
-                        ),
-                        Row(
-                          children: [
-                            Text(
-                              'Communicatoin : ',
-                              style: kCardTitleStyle(),
-                            ),
-                            Text(
-                              detail.nextCommunication ?? 'null',
-                              style: kTextFormFieldStyle(),
-                            )
-                          ],
-                        ),
+                        )
                       ],
                     ),
                   ),
@@ -95,6 +74,24 @@ class _ViewSavedDetailsState extends State<ViewSavedDetails> {
           );
         },
       ),
+    );
+  }
+
+  Row detailRow(
+    String detail,
+    String title,
+  ) {
+    return Row(
+      children: [
+        Text(
+          title,
+          style: kCardTitleStyle(),
+        ),
+        Text(
+          detail,
+          style: kTextFormFieldStyle(),
+        )
+      ],
     );
   }
 }

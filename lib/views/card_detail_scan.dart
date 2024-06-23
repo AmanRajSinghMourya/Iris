@@ -4,6 +4,7 @@ import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:google_ml_kit/google_ml_kit.dart';
 import 'package:image_picker/image_picker.dart';
+import 'package:iris/utilities/button_widget.dart';
 import 'package:iris/utilities/constants.dart';
 import 'package:iris/utilities/strings.dart';
 import 'package:iris/views/detail_form.dart';
@@ -108,36 +109,24 @@ class _CardDetailScanState extends State<CardDetailScan> {
                 },
               ),
               SizedBox(height: size.height * 0.01),
-              SizedBox(
-                height: 55,
-                width: double.infinity,
-                child: ElevatedButton(
-                  style: ButtonStyle(
-                    shape: WidgetStateProperty.all(
-                      RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(15),
-                      ),
+              CustomButton(
+                onPressed: () {
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                      builder: (context) => const DetailForm(),
                     ),
-                    backgroundColor:
-                        WidgetStateProperty.all<Color>(cardBackgroundColor),
-                  ),
-                  onPressed: () {
-                    Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                        builder: (context) => const DetailForm(),
-                      ),
+                  );
+                },
+                width: double.infinity,
+                child: ValueListenableBuilder<String>(
+                  valueListenable: extractText,
+                  builder: (context, text, _) {
+                    return Text(
+                      text.isEmpty ? skip : Continue,
+                      style: kButtonStyle(),
                     );
                   },
-                  child: ValueListenableBuilder<String>(
-                    valueListenable: extractText,
-                    builder: (context, text, _) {
-                      return Text(
-                        text.isEmpty ? skip : Continue,
-                        style: kButtonStyle(),
-                      );
-                    },
-                  ),
                 ),
               ),
 
