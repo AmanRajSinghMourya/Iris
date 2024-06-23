@@ -65,12 +65,6 @@ class _SignUpViewState extends State<SignUpView> {
           flex: 4,
           child: RotatedBox(
             quarterTurns: 3,
-            // child: Lottie.asset(
-            //   'assets/coin.json',
-            //   height: size.height * 0.3,
-            //   width: double.infinity,
-            //   fit: BoxFit.fill,
-            // ),
             child: Container(),
           ),
         ),
@@ -104,9 +98,7 @@ class _SignUpViewState extends State<SignUpView> {
               style: kLoginTitleStyle(size),
             ),
           ),
-          SizedBox(
-            height: size.height * 0.03,
-          ),
+          customSizedBox(size),
           Padding(
             padding: const EdgeInsets.only(left: 20.0, right: 20),
             child: Form(
@@ -138,9 +130,7 @@ class _SignUpViewState extends State<SignUpView> {
                       return null;
                     },
                   ),
-                  SizedBox(
-                    height: size.height * 0.02,
-                  ),
+                  customSizedBox(size),
 
                   /// Gmail
                   TextFormField(
@@ -167,9 +157,7 @@ class _SignUpViewState extends State<SignUpView> {
                       return null;
                     },
                   ),
-                  SizedBox(
-                    height: size.height * 0.02,
-                  ),
+                  customSizedBox(size),
 
                   /// password
                   ValueListenableBuilder(
@@ -213,9 +201,8 @@ class _SignUpViewState extends State<SignUpView> {
 
                   /// Type of User
                   /// so that we can differentiate between the user and the admin
-                  SizedBox(
-                    height: size.height * 0.02,
-                  ),
+                  customSizedBox(size),
+
                   ValueListenableBuilder<String>(
                     valueListenable: _roleNotifier,
                     builder: (context, role, child) {
@@ -251,9 +238,8 @@ class _SignUpViewState extends State<SignUpView> {
                       );
                     },
                   ),
-                  SizedBox(
-                    height: size.height * 0.01,
-                  ),
+                  customSizedBox(size),
+
                   Text(
                     'Creating an account means you\'re okay with our Terms of Services and our Privacy Policy',
                     style: kLoginTermsAndPrivacyStyle(size),
@@ -267,9 +253,7 @@ class _SignUpViewState extends State<SignUpView> {
                   signUpButton(
                     theme,
                   ),
-                  SizedBox(
-                    height: size.height * 0.03,
-                  ),
+                  customSizedBox(size),
 
                   /// Navigate To Login Screen
                   GestureDetector(

@@ -1,6 +1,6 @@
 const String gallery = "Gallery";
 const String camera = "Camera";
-const String scanIdCard = "Scan Id Card";
+const String scanCard = "Scan Card";
 const String pleaseSelectAnImage = "Please Select An Image";
 const String pleaseScanCard = "Please Scan Card";
 

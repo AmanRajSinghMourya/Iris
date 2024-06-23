@@ -1,8 +1,10 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:hive_flutter/adapters.dart';
 import 'package:iris/controller/save_details.dart';
 import 'package:iris/utilities/constants.dart';
+import 'package:iris/views/card_detail_scan.dart';
 import 'package:iris/views/signup_view.dart';
 import 'firebase_options.dart';
 
@@ -22,6 +24,7 @@ class MyApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final authentication = FirebaseAuth.instance;
     return MaterialApp(
       title: 'Iris',
       debugShowCheckedModeBanner: false,
@@ -31,7 +34,9 @@ class MyApp extends StatelessWidget {
         fontFamily: 'IBMPlexSans',
         brightness: Brightness.dark,
       ),
-      home: const SignUpView(),
+      home: authentication.currentUser == null
+          ? const SignUpView()
+          : const CardDetailScan(),
     );
   }
 }

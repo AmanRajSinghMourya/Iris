@@ -192,9 +192,7 @@ class _LoginViewState extends State<LoginView> {
 
                   /// Login Button
                   loginButton(),
-                  SizedBox(
-                    height: size.height * 0.03,
-                  ),
+                  customSizedBox(size),
 
                   /// Navigate To Login Screen
                   GestureDetector(

@@ -40,32 +40,25 @@ class _CardDetailScanState extends State<CardDetailScan> {
   Widget build(BuildContext context) {
     var size = MediaQuery.of(context).size;
     return Scaffold(
+      appBar: AppBar(
+        backgroundColor: kBackgroundColor,
+        title: Text(
+          scanCard,
+          style: kButtonStyle(),
+        ),
+      ),
       backgroundColor: kBackgroundColor,
       body: Center(
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          mainAxisAlignment: MainAxisAlignment.start,
-          children: [
-            SizedBox(
-              height: size.height * 0.05,
-            ),
-            Padding(
-              padding: const EdgeInsets.only(left: 20.0),
-              child: Text(
-                scanIdCard,
-                style: kLoginSubtitleStyle(size),
-              ),
-            ),
-            SizedBox(
-              height: size.height * 0.03,
-            ),
-            ValueListenableBuilder<File?>(
-              valueListenable: _imageFile,
-              builder: (context, file, _) {
-                return Padding(
-                  padding:
-                      const EdgeInsets.symmetric(horizontal: 8.0, vertical: 5),
-                  child: Card(
+        child: Padding(
+          padding: const EdgeInsets.only(left: 10.0, right: 10.0),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.center,
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              ValueListenableBuilder<File?>(
+                valueListenable: _imageFile,
+                builder: (context, file, _) {
+                  return Card(
                     color: cardBackgroundColor,
                     elevation: 2,
                     child: SizedBox(
@@ -111,17 +104,20 @@ class _CardDetailScanState extends State<CardDetailScan> {
                               ),
                       ),
                     ),
-                  ),
-                );
-              },
-            ),
-            SizedBox(height: size.height * 0.01),
-            Center(
-              child: SizedBox(
+                  );
+                },
+              ),
+              SizedBox(height: size.height * 0.01),
+              SizedBox(
                 height: 55,
-                width: size.width * 0.9,
+                width: double.infinity,
                 child: ElevatedButton(
                   style: ButtonStyle(
+                    shape: WidgetStateProperty.all(
+                      RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(15),
+                      ),
+                    ),
                     backgroundColor:
                         WidgetStateProperty.all<Color>(cardBackgroundColor),
                   ),
@@ -129,7 +125,7 @@ class _CardDetailScanState extends State<CardDetailScan> {
                     Navigator.push(
                       context,
                       MaterialPageRoute(
-                        builder: (context) => DetailForm(),
+                        builder: (context) => const DetailForm(),
                       ),
                     );
                   },
@@ -144,15 +140,12 @@ class _CardDetailScanState extends State<CardDetailScan> {
                   ),
                 ),
               ),
-            ),
 
-            /// Extracted Text
-            SizedBox(
-              height: size.height * 0.01,
-            ),
-            Padding(
-              padding: const EdgeInsets.all(8.0),
-              child: Card(
+              /// Extracted Text
+              SizedBox(
+                height: size.height * 0.01,
+              ),
+              Card(
                 color: cardBackgroundColor,
                 elevation: 2,
                 child: SizedBox(
@@ -171,8 +164,8 @@ class _CardDetailScanState extends State<CardDetailScan> {
                       },
                     )),
               ),
-            ),
-          ],
+            ],
+          ),
         ),
       ),
     );

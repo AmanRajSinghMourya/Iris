@@ -40,8 +40,8 @@ TextStyle kTextFormFieldStyle() => const TextStyle(
 
 TextStyle kButtonStyle() => const TextStyle(
       color: Colors.white,
-      fontSize: 18,
-      fontWeight: FontWeight.w600,
+      fontSize: 20,
+      fontWeight: FontWeight.bold,
     );
 TextStyle kCardTitleStyle() => const TextStyle(
       color: Colors.white,
@@ -64,3 +64,9 @@ final kIconColor = Colors.white.withOpacity(0.7);
 
 const primaryColorCode = 0xFFA9DFD8;
 const cardBackgroundColor = Color(0xFF21222D);
+
+SizedBox customSizedBox(Size size) {
+  return SizedBox(
+    height: size.height * 0.03,
+  );
+}

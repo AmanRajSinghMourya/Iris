@@ -150,9 +150,7 @@ class _DetailFormState extends State<DetailForm> {
                         ],
                       ),
                     ),
-                    SizedBox(
-                      height: size.height * 0.03,
-                    ),
+                    customSizedBox(size),
                     Padding(
                       padding: const EdgeInsets.only(left: 20.0, right: 20),
                       child: Form(
@@ -179,9 +177,7 @@ class _DetailFormState extends State<DetailForm> {
                                 ),
                               ),
                             ),
-                            SizedBox(
-                              height: size.height * 0.03,
-                            ),
+                            customSizedBox(size),
                             Text(
                               'Visitor Region',
                               style: kLoginTermsAndPrivacyStyle(size),
@@ -218,9 +214,7 @@ class _DetailFormState extends State<DetailForm> {
                                 );
                               },
                             ),
-                            SizedBox(
-                              height: size.height * 0.03,
-                            ),
+                            customSizedBox(size),
                             Text(
                               'Lead Status',
                               style: kLoginTermsAndPrivacyStyle(size),
@@ -260,9 +254,7 @@ class _DetailFormState extends State<DetailForm> {
                                 );
                               },
                             ),
-                            SizedBox(
-                              height: size.height * 0.03,
-                            ),
+                            customSizedBox(size),
                             Text(
                               'Next Communication',
                               style: kLoginTermsAndPrivacyStyle(size),
@@ -301,9 +293,7 @@ class _DetailFormState extends State<DetailForm> {
                                 );
                               },
                             ),
-                            SizedBox(
-                              height: size.height * 0.03,
-                            ),
+                            customSizedBox(size),
                             Text(
                               'Additoinal Remarks',
                               style: kLoginTermsAndPrivacyStyle(size),
@@ -323,9 +313,7 @@ class _DetailFormState extends State<DetailForm> {
                                 ),
                               ),
                             ),
-                            SizedBox(
-                              height: size.height * 0.03,
-                            ),
+                            customSizedBox(size),
                             Row(
                               children: [
                                 Expanded(
@@ -393,9 +381,7 @@ class _DetailFormState extends State<DetailForm> {
                                 ),
                               ],
                             ),
-                            SizedBox(
-                              height: size.height * 0.03,
-                            ),
+                            customSizedBox(size),
                             SizedBox(
                               width: double.infinity,
                               height: 55,
