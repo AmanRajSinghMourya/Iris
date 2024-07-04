@@ -34,7 +34,6 @@ class _CardDetailScanState extends State<CardDetailScan> {
     final textRecognizer = TextRecognizer();
     final recognizedText = await textRecognizer.processImage(inputImage);
     extractText.value = recognizedText.text;
-    print(extractText.value);
   }
 
   @override
@@ -114,7 +113,8 @@ class _CardDetailScanState extends State<CardDetailScan> {
                   Navigator.push(
                     context,
                     MaterialPageRoute(
-                      builder: (context) => const DetailForm(),
+                      builder: (context) =>
+                          DetailForm(cardData: extractText.value),
                     ),
                   );
                 },

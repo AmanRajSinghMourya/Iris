@@ -10,8 +10,8 @@ import 'package:iris/views/view_saved_details.dart';
 import 'package:share_plus/share_plus.dart';
 
 class DetailForm extends StatefulWidget {
-  const DetailForm({super.key});
-
+  const DetailForm({super.key, this.cardData = ""});
+  final String cardData;
   @override
   State<DetailForm> createState() => _DetailFormState();
 }
@@ -49,7 +49,8 @@ class _DetailFormState extends State<DetailForm> {
         ..region = _selectedRegion.value
         ..leadStatus = _leadStatus.value
         ..nextCommunication = nextCommunication.value
-        ..remarks = remarksController.text;
+        ..remarks = remarksController.text
+        ..cardData = widget.cardData;
 
       final box = Boxes.getSaveDetails();
       box.add(saveDetails);

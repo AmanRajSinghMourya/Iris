@@ -39,6 +39,7 @@ class _ViewSavedDetailsState extends State<ViewSavedDetails> {
                       mainAxisAlignment: MainAxisAlignment.spaceAround,
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
+                        detailRow(detail.cardData!, "Card Data : "),
                         detailRow(detail.productDetail!, 'Product Detail : '),
                         detailRow(detail.region!, 'Region : '),
                         detailRow(detail.leadStatus!, 'Lead Status : '),
@@ -77,21 +78,28 @@ class _ViewSavedDetailsState extends State<ViewSavedDetails> {
     );
   }
 
-  Row detailRow(
+  Padding detailRow(
     String detail,
     String title,
   ) {
-    return Row(
-      children: [
-        Text(
-          title,
-          style: kCardTitleStyle(),
-        ),
-        Text(
-          detail,
-          style: kTextFormFieldStyle(),
-        )
-      ],
+    return Padding(
+      padding: const EdgeInsets.only(bottom: 4),
+      child: Row(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Text(
+            title,
+            style: kCardTitleStyle(),
+          ),
+          Expanded(
+            child: Text(
+              detail,
+              style: kTextFormFieldStyle(),
+              maxLines: 7,
+            ),
+          )
+        ],
+      ),
     );
   }
 }

@@ -17,17 +17,18 @@ class SaveDetailsAdapter extends TypeAdapter<SaveDetails> {
       for (int i = 0; i < numOfFields; i++) reader.readByte(): reader.read(),
     };
     return SaveDetails()
-      ..productDetail = fields[0] as String
-      ..remarks = fields[1] as String
-      ..region = fields[2] as String
-      ..nextCommunication = fields[3] as String
-      ..leadStatus = fields[4] as String;
+      ..productDetail = fields[0] as String?
+      ..remarks = fields[1] as String?
+      ..region = fields[2] as String?
+      ..nextCommunication = fields[3] as String?
+      ..leadStatus = fields[4] as String?
+      ..cardData = fields[5] as String?;
   }
 
   @override
   void write(BinaryWriter writer, SaveDetails obj) {
     writer
-      ..writeByte(5)
+      ..writeByte(6)
       ..writeByte(0)
       ..write(obj.productDetail)
       ..writeByte(1)
@@ -37,7 +38,9 @@ class SaveDetailsAdapter extends TypeAdapter<SaveDetails> {
       ..writeByte(3)
       ..write(obj.nextCommunication)
       ..writeByte(4)
-      ..write(obj.leadStatus);
+      ..write(obj.leadStatus)
+      ..writeByte(5)
+      ..write(obj.cardData);
   }
 
   @override
