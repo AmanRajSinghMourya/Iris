@@ -33,13 +33,14 @@ class _EditFormState extends State<EditForm> {
     'Cold - Not interested',
   ];
   final ValueNotifier<String?> _leadStatus = ValueNotifier<String?>(null);
-
+  final cardDataController = TextEditingController();
   @override
   void initState() {
     productDetail.text = widget.details.productDetail!;
     _selectedRegion.value = widget.details.region!;
     _leadStatus.value = widget.details.leadStatus!;
     nextCommunication.value = widget.details.nextCommunication!;
+    cardDataController.text = widget.details.cardData!;
     super.initState();
   }
 
@@ -48,6 +49,7 @@ class _EditFormState extends State<EditForm> {
     _selectedRegion.dispose();
     _leadStatus.dispose();
     nextCommunication.dispose();
+    cardDataController.dispose();
     super.dispose();
   }
 
@@ -58,12 +60,14 @@ class _EditFormState extends State<EditForm> {
         widget.details.region = _selectedRegion.value;
         widget.details.leadStatus = _leadStatus.value;
         widget.details.nextCommunication = nextCommunication.value;
+        widget.details.cardData = cardDataController.text;
       });
       widget.details.save();
       productDetail.clear();
       _selectedRegion.value = null;
       _leadStatus.value = null;
       nextCommunication.value = null;
+      cardDataController.clear();
     }
     Navigator.of(context).pop();
   }
@@ -89,14 +93,34 @@ class _EditFormState extends State<EditForm> {
                   mainAxisAlignment: MainAxisAlignment.start,
                   children: [
                     Padding(
-                      padding: const EdgeInsets.only(
-                          left: 20.0, right: 20, top: 20.0),
+                      padding:
+                          const EdgeInsets.only(left: 20.0, right: 20, top: 10),
                       child: Form(
                         key: _formKey,
                         child: Column(
                           mainAxisAlignment: MainAxisAlignment.start,
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
+                            Text(
+                              'Card Details',
+                              style: kLoginTermsAndPrivacyStyle(size),
+                              textAlign: TextAlign.center,
+                            ),
+                            TextField(
+                              controller: cardDataController,
+                              maxLines: 7,
+                              style: kTextFormFieldStyle(),
+                              decoration: InputDecoration(
+                                focusedBorder: kFocusedBorder(),
+                                hintStyle: kHintTextStyle(),
+                                border: const OutlineInputBorder(
+                                  borderRadius: BorderRadius.all(
+                                    Radius.circular(15),
+                                  ),
+                                ),
+                              ),
+                            ),
+                            customSizedBox(size),
                             Text(
                               'Products/Services Interested In?',
                               style: kLoginTermsAndPrivacyStyle(size),
@@ -236,11 +260,11 @@ class _EditFormState extends State<EditForm> {
                               onPressed: () {
                                 saveForm();
                               },
+                              width: double.infinity,
                               child: Text(
                                 'Save',
                                 style: kButtonStyle(),
                               ),
-                              width: double.infinity,
                             ),
                             const SizedBox(
                               width: 20,

@@ -67,6 +67,6 @@ const cardBackgroundColor = Color(0xFF21222D);
 
 SizedBox customSizedBox(Size size) {
   return SizedBox(
-    height: size.height * 0.03,
+    height: size.height * 0.025,
   );
 }

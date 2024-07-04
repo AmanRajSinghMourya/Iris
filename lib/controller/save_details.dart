@@ -17,4 +17,7 @@ class SaveDetails extends HiveObject {
 
   @HiveField(4)
   late String? leadStatus;
+
+  @HiveField(5)
+  late String? cardData;
 }
