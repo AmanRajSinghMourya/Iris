@@ -24,55 +24,65 @@ class _ViewSavedDetailsState extends State<ViewSavedDetails> {
         valueListenable: Boxes.getSaveDetails().listenable(),
         builder: (context, Box<SaveDetails> box, _) {
           final details = box.values.toList().cast<SaveDetails>();
-          return ListView.builder(
-            itemCount: details.length,
-            itemBuilder: (context, index) {
-              final detail = details[index];
-              return Padding(
-                padding: const EdgeInsets.all(8.0),
-                child: Card(
-                  elevation: 2,
-                  color: cardBackgroundColor,
-                  child: Container(
-                    padding: const EdgeInsets.all(8.0),
-                    child: Column(
-                      mainAxisAlignment: MainAxisAlignment.spaceAround,
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        detailRow(detail.cardData!, "Card Data : "),
-                        detailRow(detail.productDetail!, 'Product Detail : '),
-                        detailRow(detail.region!, 'Region : '),
-                        detailRow(detail.leadStatus!, 'Lead Status : '),
-                        detailRow(
-                            detail.nextCommunication!, 'Communicatoin : '),
-                        Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceAround,
-                          children: [
-                            IconButton(
-                              onPressed: () {
-                                Navigator.of(context).push(MaterialPageRoute(
-                                  builder: (context) => EditForm(
-                                    details: detail,
+          return details.isNotEmpty
+              ? ListView.builder(
+                  itemCount: details.length,
+                  itemBuilder: (context, index) {
+                    final detail = details[index];
+                    return Padding(
+                      padding: const EdgeInsets.all(8.0),
+                      child: Card(
+                        elevation: 2,
+                        color: cardBackgroundColor,
+                        child: Container(
+                          padding: const EdgeInsets.all(8.0),
+                          child: Column(
+                            mainAxisAlignment: MainAxisAlignment.spaceAround,
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              detailRow(detail.cardData!, "Card Data : "),
+                              detailRow(
+                                  detail.productDetail!, 'Product Detail : '),
+                              detailRow(detail.region!, 'Region : '),
+                              detailRow(detail.leadStatus!, 'Lead Status : '),
+                              detailRow(detail.nextCommunication!,
+                                  'Communicatoin : '),
+                              Row(
+                                mainAxisAlignment:
+                                    MainAxisAlignment.spaceAround,
+                                children: [
+                                  IconButton(
+                                    onPressed: () {
+                                      Navigator.of(context)
+                                          .push(MaterialPageRoute(
+                                        builder: (context) => EditForm(
+                                          details: detail,
+                                        ),
+                                      ));
+                                    },
+                                    icon: const Icon(Icons.edit),
                                   ),
-                                ));
-                              },
-                              icon: const Icon(Icons.edit),
-                            ),
-                            IconButton(
-                              onPressed: () {
-                                detail.delete();
-                              },
-                              icon: const Icon(Icons.delete),
-                            ),
-                          ],
-                        )
-                      ],
-                    ),
+                                  IconButton(
+                                    onPressed: () {
+                                      detail.delete();
+                                    },
+                                    icon: const Icon(Icons.delete),
+                                  ),
+                                ],
+                              )
+                            ],
+                          ),
+                        ),
+                      ),
+                    );
+                  },
+                )
+              : Center(
+                  child: Text(
+                    " No data yet ",
+                    style: kCardTitleStyle(),
                   ),
-                ),
-              );
-            },
-          );
+                );
         },
       ),
     );

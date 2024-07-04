@@ -2,6 +2,12 @@ import 'package:hive/hive.dart';
 import 'package:iris/controller/save_details.dart';
 
 class Boxes {
-  static Box<SaveDetails> getSaveDetails() =>
-      Hive.box<SaveDetails>('saveDetails');
+  static void init() {
+    Hive.registerAdapter(SaveDetailsAdapter());
+  }
+
+  //open hive box here
+  static Box<SaveDetails> getSaveDetails() {
+    return Hive.box<SaveDetails>('saveDetails');
+  }
 }

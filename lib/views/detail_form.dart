@@ -42,6 +42,15 @@ class _DetailFormState extends State<DetailForm> {
   final ValueNotifier<String?> _leadStatus = ValueNotifier<String?>(null);
   final ValueNotifier<bool> isLoading = ValueNotifier(false);
 
+  void initstate() {
+    super.initState();
+    initialize();
+  }
+
+  Future<void> initialize() async {
+    await Hive.openBox<SaveDetails>('saveDetails');
+  }
+
   Future<void> saveForm() async {
     if (_formKey.currentState!.validate()) {
       final saveDetails = SaveDetails()
@@ -51,7 +60,7 @@ class _DetailFormState extends State<DetailForm> {
         ..nextCommunication = nextCommunication.value
         ..remarks = remarksController.text
         ..cardData = widget.cardData;
-
+      await Hive.openBox<SaveDetails>('saveDetails');
       final box = Boxes.getSaveDetails();
       box.add(saveDetails);
       isLoading.value = false;
@@ -79,10 +88,6 @@ class _DetailFormState extends State<DetailForm> {
       nextCommunication.value = null;
       remarksController.clear();
     }
-  }
-
-  Future<void> addOtherLead() async {
-    Navigator.of(context).pop();
   }
 
   Future<void> logout() async {
@@ -120,7 +125,8 @@ class _DetailFormState extends State<DetailForm> {
         backgroundColor: kBackgroundColor,
         actions: [
           IconButton(
-            onPressed: () {
+            onPressed: () async {
+              await initialize();
               Navigator.of(context).push(
                 MaterialPageRoute(
                   builder: (context) {
@@ -315,8 +321,26 @@ class _DetailFormState extends State<DetailForm> {
                               children: [
                                 Expanded(
                                     child: CustomButton(
-                                  onPressed: () {
-                                    saveForm();
+                                  onPressed: () async {
+                                    await saveForm();
+                                    await showDialog(
+                                        context: context,
+                                        builder: (context) {
+                                          return AlertDialog(
+                                            title: const Text('Saved'),
+                                            content: const Text(
+                                                'Details saved successfully'),
+                                            actions: [
+                                              TextButton(
+                                                onPressed: () {
+                                                  Navigator.of(context).pop();
+                                                },
+                                                child: const Text('OK'),
+                                              ),
+                                            ],
+                                          );
+                                        });
+                                    Navigator.of(context).pop();
                                   },
                                   child: Text(
                                     'Save',
@@ -346,16 +370,6 @@ class _DetailFormState extends State<DetailForm> {
                               ],
                             ),
                             customSizedBox(size),
-                            CustomButton(
-                              width: double.infinity,
-                              onPressed: () {
-                                addOtherLead();
-                              },
-                              child: Text(
-                                'Add Other Lead',
-                                style: kButtonStyle(),
-                              ),
-                            )
                           ],
                         ),
                       ),
