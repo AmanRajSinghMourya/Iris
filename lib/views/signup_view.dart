@@ -258,10 +258,13 @@ class _SignUpViewState extends State<SignUpView> {
                   /// Navigate To Login Screen
                   GestureDetector(
                     onTap: () {
-                      Navigator.push(
-                          context,
-                          CupertinoPageRoute(
-                              builder: (ctx) => const LoginView()));
+                      Navigator.pushReplacement(
+                        context,
+                        MaterialPageRoute(
+                          builder: (context) => const LoginView(),
+                        ),
+                      );
+
                       nameController.clear();
                       emailController.clear();
                       passwordController.clear();

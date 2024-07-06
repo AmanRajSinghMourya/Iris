@@ -4,7 +4,6 @@ import 'package:flutter/material.dart';
 
 import 'package:get/get.dart';
 import 'package:iris/user_model/user_model.dart';
-import 'package:iris/views/card_detail_scan.dart';
 
 //https://firebase.google.com/docs/auth/flutter/password-auth
 class AuthenticationController extends GetxController {
@@ -22,8 +21,7 @@ class AuthenticationController extends GetxController {
     try {
       await authentication.signInWithEmailAndPassword(
           email: email, password: password);
-      Navigator.pushReplacement(context,
-          MaterialPageRoute(builder: (context) => const CardDetailScan()));
+
       return "";
     } on FirebaseAuthException catch (e) {
       if (e.code == 'user-not-found') {

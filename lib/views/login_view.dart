@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:iris/controller/auth_controller.dart';
 import 'package:iris/utilities/constants.dart';
+import 'package:iris/views/card_detail_scan.dart';
+import 'package:iris/views/signup_view.dart';
 
 class LoginView extends StatefulWidget {
   const LoginView({Key? key}) : super(key: key);
@@ -194,10 +196,15 @@ class _LoginViewState extends State<LoginView> {
                   loginButton(),
                   customSizedBox(size),
 
-                  /// Navigate To Login Screen
+                  /// Navigate To Sign Up Screen
                   GestureDetector(
                     onTap: () {
-                      Navigator.pop(context);
+                      Navigator.pushReplacement(
+                        context,
+                        MaterialPageRoute(
+                          builder: (context) => const SignUpView(),
+                        ),
+                      );
                       emailController.clear();
                       passwordController.clear();
                       _formKey.currentState?.reset();
@@ -251,7 +258,15 @@ class _LoginViewState extends State<LoginView> {
               email,
               password,
             );
-            if (loginResult != "") {
+            if (loginResult == "") {
+              emailController.clear();
+              passwordController.clear();
+              _formKey.currentState?.reset();
+              Navigator.pushReplacement(
+                  context,
+                  MaterialPageRoute(
+                      builder: (context) => const CardDetailScan()));
+            } else if (loginResult != "") {
               showDialog(
                 context: context,
                 builder: (context) {
