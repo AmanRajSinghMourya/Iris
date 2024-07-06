@@ -189,15 +189,14 @@ class _CardDetailScanState extends State<CardDetailScan> {
                 SizedBox(height: size.height * 0.01),
                 CustomButton(
                   onPressed: () {
-                    extractText.value = "";
-                    _imageFile.value = null;
-                    cardDetailController.clear();
                     Navigator.push(
                       context,
                       MaterialPageRoute(
                         builder: (context) => DetailForm(
-                            cardData:
-                                "${extractText.value}\n${cardDetailController.text}"),
+                          cardData: cardDetailController.text.isEmpty
+                              ? extractText.value
+                              : "${cardDetailController.text}\n${extractText.value}",
+                        ),
                       ),
                     );
                   },
